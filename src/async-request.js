@@ -16,6 +16,7 @@ class AsyncRequest {
     this.successHandlers = [];
     this.failureHandlers = [];
     this.abortHandlers = [];
+    this.endHandlers = [];
     this.request = new XMLHttpRequest();
     this.inject = null;
   }
@@ -251,6 +252,16 @@ class AsyncRequest {
 
 
   /**
+   * Calls all methods in endHandlers on request end, whether is successful or
+   * not
+   *
+   **/
+  setOnRequestEndHandlers() {
+    this.setEventHandlers("end", "endHandlers")();
+  }
+
+
+  /**
    * Set event listeners for XHR events 
    *
    **/
@@ -258,6 +269,8 @@ class AsyncRequest {
     this.setProgressHandlers();
     this.setSuccessHandlers();
     this.setFailureHandlers();
+    this.setAbourtHandlers();
+    this.setOnRequestEndHandlers();
   }
 
 
