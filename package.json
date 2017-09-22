@@ -1,0 +1,42 @@
+{
+  "name": "async-request",
+  "version": "0.0.1",
+  "description": "Simple library for async network requests",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcoroganovic/async-request.git"
+  },
+  "keywords": [
+    "ajax",
+    "async",
+    "asynchronous",
+    "promises",
+    "declarative"
+  ],
+  "author": "Marco Roganovic <marcoroganovic@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcoroganovic/async-request/issues"
+  },
+  "homepage": "https://github.com/marcoroganovic/async-request#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-dest": "^0.2.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "pump": "^1.0.2",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+  }
+}
