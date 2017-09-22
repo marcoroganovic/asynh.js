@@ -185,6 +185,9 @@ class AsyncRequest {
     if(this.responseType === "csv") {
       return this.parseCSV(resContent);
     }
+
+
+    return resContent;
   }
 
   /**
