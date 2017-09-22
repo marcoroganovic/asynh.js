@@ -258,29 +258,5 @@ class AsyncRequest {
 
 }
 
-/**
- * Demo usage -> 
- **/
-
-/*
-const req = new AsyncRequest({
-  method: "GET",
-  url: "http:someurl.com",
-  headers: {
-
-  },
-  responseType: "json",
-  rawResponse: true,
-  sequentially: true
-});
-
-
-req
-  .inject(dispatch)
-  .progress(fnOne, fnTwo)
-  .success(fnThree, fnFour, fnFive)
-  .failure(showError);
-  .send();
-*/
 
 export default AsyncRequest;
