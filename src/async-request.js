@@ -7,7 +7,7 @@
 class AsyncRequest {
   constructor(options) {
     const { method, url, headers, responseType, rawResponse } = options;
-    this.method = method;
+    this.method = method.toUpperCase();
     this.url = url;
     this.headers = headers || null;
     this.responseType = responseType;
@@ -44,6 +44,34 @@ class AsyncRequest {
     if(isType("function", fn)) {
       this.inject = fn;
     }
+  }
+
+
+  /**
+   * Parses text in CSV format to JSON objects
+   * @param {String} response
+   *
+   **/
+  parseCSV(response) {
+    const { isType } = this;
+
+    if(isType("string", response) {
+      response = response.trim().split("\n");
+      const firstLine = response.shift().split(",");
+
+      return response.reduce((acc, current) => {
+        const obj = {};
+        current = current.trim().split(',');
+
+        firstLine.forEach((prop, index) => {
+          obj[prop] = current[index];
+        });
+
+        return acc.push(obj);
+      }, []);
+    }
+
+    return response;
   }
 
 
@@ -153,6 +181,10 @@ class AsyncRequest {
       let parser = new DOMParser();
       return parser.parseFromString(resContent, "text/xml");
     }
+
+    if(this.responseType === "csv") {
+      return this.parseCSV(resContent);
+    }
   }
 
   /**
@@ -228,7 +260,6 @@ class AsyncRequest {
 
 /**
  * Demo usage -> 
- *
  **/
 
 /*
