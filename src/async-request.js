@@ -55,7 +55,7 @@ class AsyncRequest {
   parseCSV(response) {
     const { isType } = this;
 
-    if(isType("string", response) {
+    if(isType("string", response)) {
       response = response.trim().split("\n");
       const firstLine = response.shift().split(",");
 

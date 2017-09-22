@@ -8,7 +8,7 @@
 AsyncRequest = function () {
   function AsyncRequest(options) {_classCallCheck(this, AsyncRequest);var
     method = options.method,url = options.url,headers = options.headers,responseType = options.responseType,rawResponse = options.rawResponse;
-    this.method = method;
+    this.method = method.toUpperCase();
     this.url = url;
     this.headers = headers || null;
     this.responseType = responseType;
@@ -45,6 +45,34 @@ AsyncRequest = function () {
       if (isType("function", fn)) {
         this.inject = fn;
       }
+    }
+
+
+    /**
+       * Parses text in CSV format to JSON objects
+       * @param {String} response
+       *
+       **/ }, { key: "parseCSV", value: function parseCSV(
+    response) {var
+      isType = this.isType;
+
+      if (isType("string", response)) {
+        response = response.trim().split("\n");
+        var firstLine = response.shift().split(",");
+
+        return response.reduce(function (acc, current) {
+          var obj = {};
+          current = current.trim().split(',');
+
+          firstLine.forEach(function (prop, index) {
+            obj[prop] = current[index];
+          });
+
+          return acc.push(obj);
+        }, []);
+      }
+
+      return response;
     }
 
 
@@ -154,6 +182,10 @@ AsyncRequest = function () {
         var parser = new DOMParser();
         return parser.parseFromString(resContent, "text/xml");
       }
+
+      if (this.responseType === "csv") {
+        return this.parseCSV(resContent);
+      }
     }
 
     /**
@@ -223,35 +255,10 @@ AsyncRequest = function () {
       this.setHeaders();
       this.setupListeners();
       this.request.send();
-    } }]);return AsyncRequest;}();
+    } }]);return AsyncRequest;}();exports.default =
 
 
 
-/**
-                                    * Demo usage -> 
-                                    *
-                                    **/
-
-/*
-                                        const req = new AsyncRequest({
-                                          method: "GET",
-                                          url: "http:someurl.com",
-                                          headers: {
-                                        
-                                          },
-                                          responseType: "json",
-                                          rawResponse: true,
-                                          sequentially: true
-                                        });
-                                        
-                                        
-                                        req
-                                          .inject(dispatch)
-                                          .progress(fnOne, fnTwo)
-                                          .success(fnThree, fnFour, fnFive)
-                                          .failure(showError);
-                                          .send();
-                                        */exports.default =
 
 AsyncRequest;
 
