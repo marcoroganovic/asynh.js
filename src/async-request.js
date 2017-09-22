@@ -15,6 +15,7 @@ class AsyncRequest {
     this.progressHandlers = [];
     this.successHandlers = [];
     this.failureHandlers = [];
+    this.abortHandlers = [];
     this.request = new XMLHttpRequest();
     this.inject = null;
   }
@@ -238,6 +239,15 @@ class AsyncRequest {
   setFailureHandlers() {
     this.setEventHandlers("error", "failureHandlers")();
   }
+ 
+  /**
+   * Calls all methods in abortHandlers on request cancelation
+   *
+   **/
+
+  setAbortHandlers() {
+    this.setEventHandlers("abort", "abortHandlers")();
+  }
 
 
   /**
@@ -252,7 +262,17 @@ class AsyncRequest {
 
 
   /**
+   * Aborts XHR request
+   *
+   **/
+  abort() {
+    this.request.abort();
+  }
+
+
+  /**
    * Initiates XHR request
+   *
    **/
   send() {
     this.setHeaders();
