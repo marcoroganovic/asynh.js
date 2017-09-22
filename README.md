@@ -23,6 +23,7 @@ let req = new AsyncRequest({});
 Configuration object of AsyncRequest can accept various parameter but essential
 two are method (which denotes which HTTP method will be used for this async
 request) and URL.
+
 ```javascript
 let link = "https://jsonplaceholder.typicode.com/posts";
 let req = new AsyncRequest({
@@ -30,3 +31,11 @@ let req = new AsyncRequest({
   url: link
 });
 ```
+
+Beside two parameters mentioned above you can also use rawResponse, which is a
+boolean type. If you don't set it default value will be true and you'll get plain
+text on successful response from the server to consume in your callback methods.
+
+Next parameter is responseType. There is no default option for it, but if you
+want to modify type of response from the server you need to set rawResponse to
+false and choose one of these values for responseType: json, csv, xml.
