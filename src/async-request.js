@@ -67,7 +67,8 @@ class AsyncRequest {
           obj[prop] = current[index];
         });
 
-        return acc.push(obj);
+        acc.push(obj);
+        return acc;
       }, []);
     }
 
