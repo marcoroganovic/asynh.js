@@ -52,7 +52,7 @@ class AsyncRequest {
   /**
    * Parses text in CSV format to JSON objects
    * @param {String} response
-   *
+   * @return {Object|String} formattedResponse
    **/
   parseCSV(response) {
     const { isType } = this;
