@@ -39,3 +39,46 @@ text on successful response from the server to consume in your callback methods.
 Next parameter is responseType. There is no default option for it, but if you
 want to modify type of response from the server you need to set rawResponse to
 false and choose one of these values for responseType: json, csv, xml.
+
+To add callbacks on various events that XHR object fires you can use progress,
+success, failure, abort methods. Each of these accepts function as parameter. In
+callback function you'll receive either plan request object or already formatted
+data based on responseType and rawResponse arguments.
+
+Besides response event or data, as a second parameter you can receive some
+method that you want to have inside callback function. To add that method you
+use inject. It receives function which as stated previously will be passed to
+every single callback method as a second parameter.
+
+### Sample usage
+
+```javascript
+let link = "https://jsonplaceholder.typicode.com/posts";
+let req = new AsyncRequest({
+  method: "GET",
+  url: link,
+  rawResponse: false,
+  responseType: "json"
+});
+
+req
+  .inject(dispatch)
+
+  .progress(function(event, dispatch) {
+    dispatch({ type: "DISPLAY_PROGRESS_BAR", payload: true });
+  })
+
+  .success(function(data, dispatch) {
+    let firstElement = data[0];
+    dispatch({ type: "RENDER_FIRST_ELEMENT", payload: firstElement });
+    return data;
+  })
+  
+  .success(function(data, dispatch) {
+    dispatch({ type: "SET_POSTS_OBJECT", payload: data });
+  })
+
+  .failure(function(event, dispatch) {
+    dispatch({ type: "SHOW_RESPONSE_ERROR", payload: true });
+  });
+```
