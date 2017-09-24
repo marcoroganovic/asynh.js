@@ -47,6 +47,8 @@ class AsyncRequest {
     if(isType("function", fn)) {
       this.inject = fn;
     }
+
+    return this;
   }
 
 
