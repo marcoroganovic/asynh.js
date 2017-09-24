@@ -4,7 +4,7 @@
  * @return {Object} XHR
  *
  **/
-class AsyncRequest {
+class Asynh {
   constructor(options) {
     const { method, url } = options;
     this.method = method.toUpperCase();
@@ -367,4 +367,4 @@ class AsyncRequest {
 }
 
 
-export default AsyncRequest;
+export default Asynh;

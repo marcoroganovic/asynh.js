@@ -1,5 +1,5 @@
 {
-  "name": "async-request",
+  "name": "asynh",
   "version": "0.0.1",
   "description": "Simple library for async network requests",
   "main": "src/main.js",

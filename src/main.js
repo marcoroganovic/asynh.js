@@ -1,2 +1,2 @@
-import AsyncRequest from "./async-request";
-export default AsyncRequest;
+import Asynh from "./async-request";
+export default Asynh;

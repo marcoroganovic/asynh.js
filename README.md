@@ -14,19 +14,19 @@ gulp
 ### Description
 
 When you include library in you project in order to use it you need to create instance of
-AsyncRequest.
+Asynh.
 
 ```javascript
-let req = new AsyncRequest({});
+let req = new Asynh({});
 ```
 
-Configuration object of AsyncRequest can accept various parameter but essential
+Configuration object of Asynh can accept various parameter but essential
 two are method (which denotes which HTTP method will be used for this async
 request) and URL.
 
 ```javascript
 let link = "https://jsonplaceholder.typicode.com/posts";
-let req = new AsyncRequest({
+let req = new Asynh({
   method: "GET",
   url: link
 });
@@ -54,7 +54,7 @@ every single callback method as a second parameter.
 
 ```javascript
 let link = "https://jsonplaceholder.typicode.com/posts";
-let req = new AsyncRequest({
+let req = new Asynh({
   method: "GET",
   url: link,
   rawResponse: false,
