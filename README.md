@@ -81,4 +81,7 @@ req
   .failure(function(event, dispatch) {
     dispatch({ type: "SHOW_RESPONSE_ERROR", payload: true });
   });
+
+
+  req.send();
 ```
