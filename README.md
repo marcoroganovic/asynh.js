@@ -1,4 +1,4 @@
-## Async Request
+## asynh.js
 Small library for async browser requests with similar API to ES2015 Promises.
 
 ### To run locally
