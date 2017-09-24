@@ -6,12 +6,12 @@
  **/
 class AsyncRequest {
   constructor(options) {
-    const { method, url, headers, responseType, rawResponse } = options;
+    const { method, url } = options;
     this.method = method.toUpperCase();
     this.url = url;
-    this.headers = headers || null;
-    this.responseType = responseType;
-    this.rawResponse = rawResponse;
+    this.headers = options.headers || null;
+    this.responseType = options.responseType || null;
+    this.rawResponse = !!options.rawResponse;
     this.progressHandlers = [];
     this.successHandlers = [];
     this.failureHandlers = [];
@@ -19,6 +19,7 @@ class AsyncRequest {
     this.endHandlers = [];
     this.request = new XMLHttpRequest();
     this.inject = null;
+    this.requestReady = false;
   }
 
 
@@ -142,10 +143,12 @@ class AsyncRequest {
    * Sets headers to request object
    **/
   setHeaders() {
-    for(let header in headers) {
-      this.request.setRequestHeader(header, headers[header]);
+    if(this.headers && this.isType("object", this.headers)) {
+      for(let header in this.headers) {
+        this.request.setRequestHeader(header, this.headers[header]);
+      }
+      this.setFormHeaders();
     }
-    this.setFormHeaders();
   }
 
   /**
@@ -169,7 +172,7 @@ class AsyncRequest {
    *
    **/
   formatResponse(res) {
-    let resContent = res.target.responseText;
+    let resContent = res.currentTarget.responseText;
 
     if(this.rawResponse) {
       return resContent;
@@ -205,10 +208,18 @@ class AsyncRequest {
     return () => {
       if(this[handlersName].length) {
         this.request.addEventListener(eventName, (res) => {
-          this[handlersName].forEach(handler => {
-            let response = this.formatResponse(res);
-            value = handler(value || res, this.inject);
-          });
+          if(handlersName === "successHandlers") {
+            if(this.request.status === 200) {
+              this[handlersName].forEach(handler => {
+                let response = value || this.formatResponse(res);
+                value = handler(response, this.inject);
+              });
+            }
+          } else {
+            this[handlersName].forEach(handler => {
+              handler(res);
+            });
+          }
         });
       }
     }
@@ -269,7 +280,7 @@ class AsyncRequest {
     this.setProgressHandlers();
     this.setSuccessHandlers();
     this.setFailureHandlers();
-    this.setAbourtHandlers();
+    this.setAbortHandlers();
     this.setOnRequestEndHandlers();
   }
 
@@ -282,15 +293,73 @@ class AsyncRequest {
     this.request.abort();
   }
 
+  
+  /**
+   * Formats query string from JS object
+   *
+   **/
+  formatQueryString() {
+    let accumulator = "";
+
+    for(let prop in this.data) {
+      accumulator += (
+       `${encodeURIComponent(prop)}=${encodeURIComponent(this.data[prop])}&`
+      );
+    }
+
+    // strip & from last key-value pair
+    return accumulator.slice(0, -1);
+  }
+
+
+  /**
+   * Formats data that's going to be sent to server
+   *
+   **/
+  formatData() {
+    if(this.isType("object", this.data)) {
+      return this.data instanceof FormData ? 
+        this.data :
+        this.formatQueryString();
+    } else {
+      throw new Error("Data property should be object or instance of FormData");
+    }
+  }
+
+
+  /**
+   * Passses method and url to request object
+   *
+   **/
+  openRequest() {
+    if(this.isType("string", this.url) && 
+       this.isType("string", this.method)) {
+      this.request.open(this.method, this.url);
+    }
+  }
+
+
+  /**
+   * Send request with data passed if present
+   *
+   **/
+  sendRequest() {
+    let data = this.data ? this.formatData() : null;
+    this.request.send(data);
+  }
 
   /**
    * Initiates XHR request
    *
    **/
   send() {
-    this.setHeaders();
-    this.setupListeners();
-    this.request.send();
+    if(!this.requestReady) {
+      this.setHeaders();
+      this.setupListeners();
+      this.requestReady = true;
+    }
+    this.openRequest();
+    this.sendRequest();
   }
 
 }
