@@ -5,8 +5,8 @@ Small library for async browser requests with similar API to ES2015 Promises.
 If you want to clone and run repository locally use following commands:
 
 ```
-git clone https://github.com/marcoroganovic/async-request.git
-cd async-request
+git clone https://github.com/marcoroganovic/asynh.js.git
+cd asynh.js
 npm install
 gulp
 ```
