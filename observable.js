@@ -82,7 +82,7 @@ class Observable {
   }
 
   subscribe(observer) {
-    const safeObserver = {};
+    let safeObserver = {};
 
     if(arguments.length === 1 && typeof observer === "function") {
       safeObserver.next = observer;
