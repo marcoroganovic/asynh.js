@@ -19,12 +19,12 @@ class Observable {
     this.subscriber = subscriber;
   }
 
-  map(projection) {
+  map(predicate) {
     const self = this;
     return new Observable(observer => {
       const customObserver = {
         next(data) {
-          return observer.next(projection(data));
+          return observer.next(predicate(data));
         }
       }
 
@@ -32,12 +32,12 @@ class Observable {
     });
   }
 
-  filter(project) {
+  filter(predicate) {
     const self = this;
     return new Observable(observer => {
       const customObserver = {
         next(data) {
-          if(projection(data)) {
+          if(predicate(data)) {
             observer.next(data);
           }
         }
